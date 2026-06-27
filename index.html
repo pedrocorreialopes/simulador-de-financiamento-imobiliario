@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Simulador Inteligente de Financiamento Imobiliário Caixa Econômica Federal - Calcule parcelas SAC e PRICE, FGTS, Minha Casa Minha Vida e muito mais.">
+  <meta name="keywords" content="simulador financiamento, caixa econômica, SAC, PRICE, FGTS, Minha Casa Minha Vida, parcelas imóvel">
+  <meta name="author" content="Simulador Caixa">
+  <meta property="og:title" content="Simulador de Financiamento Imobiliário Caixa">
+  <meta property="og:description" content="Simule seu financiamento imobiliário seguindo as regras da Caixa Econômica Federal">
+  <meta name="theme-color" content="#2563EB">
+  <title>Simulador de Financiamento Imobiliário — Caixa Econômica Federal</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════
+       PAGE LOADER
+  ════════════════════════════════════════════════════════ -->
+  <div class="page-loader" id="page-loader">
+    <div class="loader-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </div>
+    <span class="loader-text">Carregando simulador...</span>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       NAVEGAÇÃO PRINCIPAL
+  ════════════════════════════════════════════════════════ -->
+  <nav class="main-nav" id="main-nav" role="navigation" aria-label="Navegação principal">
+    <div class="nav-container">
+
+      <!-- Brand -->
+      <div class="nav-brand" onclick="navigateTo('inicio')" role="button" tabindex="0" aria-label="Início">
+        <div class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">SimulaCaixa</span>
+          <span class="brand-sub">Financiamento Imobiliário</span>
+        </div>
+      </div>
+
+      <!-- Menu -->
+      <ul class="nav-menu" id="nav-menu" role="menubar">
+        <li role="none"><button class="nav-link active" data-section="inicio" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Início
+        </button></li>
+        <li role="none"><button class="nav-link" data-section="simulador" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Simulador
+        </button></li>
+        <li role="none"><button class="nav-link" data-section="tabelas" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          SAC × PRICE
+        </button></li>
+        <li role="none"><button class="nav-link" data-section="mcmv" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          MCMV
+        </button></li>
+        <li role="none"><button class="nav-link" data-section="calculadoras" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+          Calculadoras
+        </button></li>
+        <li role="none"><button class="nav-link" data-section="dicas" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Dicas
+        </button></li>
+        <li role="none"><button class="nav-link" data-section="historico" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v10l4 2"/><circle cx="12" cy="12" r="10"/></svg>
+          Histórico
+        </button></li>
+        <li role="none"><button class="nav-link" data-section="contato" role="menuitem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.61 5a2 2 0 0 1 1.99-2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17z"/></svg>
+          Contato
+        </button></li>
+      </ul>
+
+      <!-- Actions -->
+      <div class="nav-actions">
+        <button class="btn-theme" id="theme-toggle" aria-label="Alternar tema">
+          <span id="theme-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </span>
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="navigateTo('simulador')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Simular
+        </button>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════
+       CONTEÚDO PRINCIPAL
+  ════════════════════════════════════════════════════════ -->
+  <main class="page-main" id="page-main">
+
+    <!-- ══════════════════════════════════════════
+         SEÇÃO: INÍCIO / HERO
+    ══════════════════════════════════════════ -->
+    <section class="page-section active" id="section-inicio">
+
+      <!-- Hero -->
+      <div class="hero-section" id="hero">
+        <div class="container">
+          <div class="hero-content">
+            <div class="hero-badge">🏆 Simulador Oficial Caixa 2026</div>
+            <h1 class="hero-title">
+              Simulador <span class="highlight">Inteligente</span><br>
+              de Financiamento<br>Imobiliário Caixa
+            </h1>
+            <p class="hero-subtitle">
+              Descubra quanto você pode financiar, qual será sua entrada e o valor aproximado das parcelas seguindo as <strong style="color:rgba(255,255,255,0.85)">regras oficiais da Caixa Econômica Federal</strong>.
+            </p>
+            <div class="hero-cta">
+              <button class="btn-hero" id="btn-iniciar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Começar Simulação
+              </button>
+              <button class="btn-hero-ghost" onclick="navigateTo('dicas')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Ver Dicas
+              </button>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <span class="stat-num">SAC & PRICE</span>
+                <span class="stat-label">Sistemas de amortização</span>
+              </div>
+              <div class="hero-stat">
+                <span class="stat-num">FGTS</span>
+                <span class="stat-label">Inclui utilização</span>
+              </div>
+              <div class="hero-stat">
+                <span class="stat-num">MCMV</span>
+                <span class="stat-label">Minha Casa Minha Vida</span>
+              </div>
+              <div class="hero-stat">
+                <span class="stat-num">Gratuito</span>
+                <span class="stat-label">Sem cadastro</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ilustração de casas SVG -->
+        <div class="hero-illustration" aria-hidden="true">
+          <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMax meet" style="width:100%;height:100%;opacity:0.18;">
+            <!-- Casa grande -->
+            <polygon points="400,80 600,220 600,420 200,420 200,220" fill="#3B82F6"/>
+            <rect x="250" y="260" width="100" height="160" fill="#1D4ED8" rx="4"/>
+            <rect x="390" y="280" width="80" height="80" fill="#60A5FA" rx="4"/>
+            <rect x="420" y="290" width="20" height="60" fill="#2563EB"/>
+            <rect x="390" y="290" width="60" height="20" fill="#2563EB"/>
+            <!-- Telhado detalhe -->
+            <polygon points="400,80 200,220 600,220" fill="#1E3A8A"/>
+            <!-- Chaminé -->
+            <rect x="480" y="100" width="30" height="80" fill="#1E3A8A" rx="4"/>
+            <!-- Casa pequena direita -->
+            <polygon points="680,200 820,290 820,420 540,420 540,290" fill="#7C3AED" opacity="0.7"/>
+            <rect x="560" y="320" width="60" height="100" fill="#5B21B6" rx="4"/>
+            <rect x="660" y="320" width="50" height="60" fill="#8B5CF6" rx="4"/>
+            <polygon points="680,200 540,290 820,290" fill="#4C1D95" opacity="0.8"/>
+            <!-- Casa pequena esquerda -->
+            <polygon points="120,260 240,330 240,420 0,420 0,330" fill="#0891B2" opacity="0.6"/>
+            <rect x="20" y="350" width="50" height="70" fill="#0E7490" rx="4"/>
+            <rect x="100" y="350" width="60" height="50" fill="#06B6D4" rx="4"/>
+            <polygon points="120,260 0,330 240,330" fill="#164E63" opacity="0.7"/>
+            <!-- Terreno -->
+            <rect x="0" y="420" width="900" height="180" fill="#1E3A8A" opacity="0.4"/>
+            <!-- Árvores -->
+            <rect x="640" y="360" width="12" height="60" fill="#065F46"/>
+            <circle cx="646" cy="350" r="30" fill="#059669" opacity="0.8"/>
+            <rect x="140" y="370" width="10" height="50" fill="#065F46"/>
+            <circle cx="145" cy="360" r="24" fill="#059669" opacity="0.7"/>
+            <!-- Nuvens -->
+            <ellipse cx="150" cy="100" rx="80" ry="35" fill="white" opacity="0.08"/>
+            <ellipse cx="210" cy="90" rx="55" ry="28" fill="white" opacity="0.06"/>
+            <ellipse cx="750" cy="80" rx="70" ry="30" fill="white" opacity="0.07"/>
+            <ellipse cx="800" cy="70" rx="50" ry="25" fill="white" opacity="0.05"/>
+            <!-- Sol / Lua -->
+            <circle cx="800" cy="120" r="50" fill="#FCD34D" opacity="0.15"/>
+            <!-- Janelas brilhando -->
+            <rect x="410" y="290" width="56" height="16" fill="#FCD34D" opacity="0.3" rx="2"/>
+            <rect x="560" y="330" width="45" height="12" fill="#FCD34D" opacity="0.25" rx="2"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div style="padding: 80px 0; background: var(--bg-primary);">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Recursos</span>
+            <h2 class="section-title">Tudo que você precisa para simular</h2>
+            <p class="section-desc">Motor de cálculo completo com as regras atuais da Caixa Econômica Federal</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;">
+            <div class="card reveal" style="text-align:center;">
+              <div style="width:60px;height:60px;background:var(--primary-glow);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+              <h4>SAC & PRICE</h4>
+              <p style="font-size:.85rem;margin-top:8px;">Compare os dois sistemas de amortização e descubra qual é mais vantajoso para você.</p>
+            </div>
+            <div class="card reveal" style="text-align:center;">
+              <div style="width:60px;height:60px;background:rgba(5,150,105,0.1);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+              <h4>Minha Casa Minha Vida</h4>
+              <p style="font-size:.85rem;margin-top:8px;">Verifique automaticamente se você se enquadra e qual é o subsídio estimado.</p>
+            </div>
+            <div class="card reveal" style="text-align:center;">
+              <div style="width:60px;height:60px;background:rgba(124,58,237,0.1);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              </div>
+              <h4>FGTS Inteligente</h4>
+              <p style="font-size:.85rem;margin-top:8px;">Calcule o impacto do FGTS na entrada e descubra quanto você economiza.</p>
+            </div>
+            <div class="card reveal" style="text-align:center;">
+              <div style="width:60px;height:60px;background:rgba(217,119,6,0.1);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
+              </div>
+              <h4>Histórico de Simulações</h4>
+              <p style="font-size:.85rem;margin-top:8px;">Salve e compare suas simulações anteriores com facilidade.</p>
+            </div>
+            <div class="card reveal" style="text-align:center;">
+              <div style="width:60px;height:60px;background:rgba(8,145,178,0.1);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <h4>Análise Inteligente</h4>
+              <p style="font-size:.85rem;margin-top:8px;">Insights automáticos sobre sua renda, entrada e melhor estratégia de financiamento.</p>
+            </div>
+            <div class="card reveal" style="text-align:center;">
+              <div style="width:60px;height:60px;background:rgba(220,38,38,0.1);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <h4>Custos da Compra</h4>
+              <p style="font-size:.85rem;margin-top:8px;">ITBI, registro, escritura e todos os custos envolvidos na aquisição do imóvel.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SEÇÃO: SIMULADOR
+    ══════════════════════════════════════════ -->
+    <section class="page-section" id="section-simulador">
+      <div class="simulator-section">
+        <div class="container">
+
+          <div class="section-header">
+            <span class="section-tag">Simulador</span>
+            <h2 class="section-title">Simule seu Financiamento</h2>
+            <p class="section-desc">Preencha os campos abaixo para calcular as condições do seu financiamento imobiliário</p>
+          </div>
+
+          <!-- Aviso Legal -->
+          <div class="aviso-legal">
+            <span class="aviso-icon">⚠️</span>
+            <p><strong>Aviso:</strong> Esta simulação tem caráter informativo. Os valores são estimativas baseadas nos parâmetros informados. Condições reais dependem de análise de crédito e normas vigentes da Caixa Econômica Federal.</p>
+          </div>
+
+          <!-- Formulário -->
+          <form id="form-simulacao" novalidate>
+
+            <!-- Card: Dados do Comprador -->
+            <div class="card reveal" style="margin-bottom: 28px;">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                  <div class="card-title">Dados do Comprador</div>
+                  <div class="card-subtitle">Informações pessoais e financeiras</div>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="nome">Nome Completo</label>
+                  <input type="text" id="nome" class="input" placeholder="Seu nome completo" autocomplete="name">
+                </div>
+                <div class="form-group">
+                  <label for="cpf">CPF</label>
+                  <input type="text" id="cpf" class="input" placeholder="000.000.000-00" data-mask="cpf" maxlength="14">
+                </div>
+                <div class="form-group">
+                  <label for="idade">Idade <span style="color:var(--danger)">*</span></label>
+                  <input type="number" id="idade" class="input" placeholder="Ex: 35" min="18" max="120" value="35">
+                </div>
+                <div class="form-group">
+                  <label for="estado-civil">Estado Civil</label>
+                  <select id="estado-civil" class="input">
+                    <option value="">Selecione...</option>
+                    <option value="solteiro">Solteiro(a)</option>
+                    <option value="casado">Casado(a)</option>
+                    <option value="uniao-estavel">União Estável</option>
+                    <option value="divorciado">Divorciado(a)</option>
+                    <option value="viuvo">Viúvo(a)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="cidade-comprador">Cidade</label>
+                  <input type="text" id="cidade-comprador" class="input" placeholder="Sua cidade">
+                </div>
+                <div class="form-group">
+                  <label for="estado-comprador">Estado</label>
+                  <select id="estado-comprador" class="input">
+                    <option value="">Selecione...</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="profissao">Profissão</label>
+                  <input type="text" id="profissao" class="input" placeholder="Sua profissão">
+                </div>
+                <div class="form-group">
+                  <label for="telefone">Telefone</label>
+                  <input type="tel" id="telefone" class="input" placeholder="(11) 99999-9999" data-mask="phone">
+                </div>
+                <div class="form-group">
+                  <label for="email">E-mail</label>
+                  <input type="email" id="email" class="input" placeholder="seu@email.com" autocomplete="email">
+                </div>
+                <div class="form-group">
+                  <label for="renda-bruta">Renda Bruta Mensal <span style="color:var(--danger)">*</span></label>
+                  <div class="input-group">
+                    <span class="input-prefix">R$</span>
+                    <input type="text" id="renda-bruta" class="input" placeholder="0,00" data-mask="currency">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="renda-liquida">Renda Líquida Mensal</label>
+                  <div class="input-group">
+                    <span class="input-prefix">R$</span>
+                    <input type="text" id="renda-liquida" class="input" placeholder="0,00" data-mask="currency">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="possui-fgts">Possui FGTS?</label>
+                  <select id="possui-fgts" class="input">
+                    <option value="nao">Não</option>
+                    <option value="sim">Sim</option>
+                  </select>
+                </div>
+
+                <div class="form-group" id="group-fgts" style="display:none;">
+                  <label for="valor-fgts">Valor disponível de FGTS</label>
+                  <div class="input-group">
+                    <span class="input-prefix">R$</span>
+                    <input type="text" id="valor-fgts" class="input" placeholder="0,00" data-mask="currency" value="">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="possui-dependentes">Possui dependentes?</label>
+                  <select id="possui-dependentes" class="input">
+                    <option value="nao">Não</option>
+                    <option value="sim">Sim</option>
+                  </select>
+                </div>
+
+                <div class="form-group" id="group-dependentes" style="display:none;">
+                  <label for="num-dependentes">Número de dependentes</label>
+                  <input type="number" id="num-dependentes" class="input" placeholder="0" min="0" max="20">
+                </div>
+              </div>
+
+              <!-- Checkboxes adicionais -->
+              <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 12px;">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="primeiro-imovel" checked>
+                  🏠 Primeiro imóvel
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="servidor-publico">
+                  👔 Servidor público
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="outro-financiamento">
+                  ⚠️ Possui outro financiamento
+                </label>
+              </div>
+            </div>
+
+            <!-- Card: Dados do Imóvel -->
+            <div class="card reveal" style="margin-bottom: 28px;">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+                <div>
+                  <div class="card-title">Dados do Imóvel</div>
+                  <div class="card-subtitle">Informações sobre o imóvel desejado</div>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="valor-imovel">Valor do Imóvel <span style="color:var(--danger)">*</span></label>
+                  <div class="input-group">
+                    <span class="input-prefix">R$</span>
+                    <input type="text" id="valor-imovel" class="input" placeholder="0,00" data-mask="currency">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="valor-entrada">
+                    Valor da Entrada <span style="color:var(--danger)">*</span>
+                    <span class="badge badge-primary" id="badge-perc-max">Máx. 80%</span>
+                  </label>
+                  <div class="input-group">
+                    <span class="input-prefix">R$</span>
+                    <input type="text" id="valor-entrada" class="input" placeholder="0,00" data-mask="currency">
+                  </div>
+                  <span id="entrada-indicator" class="entrada-indicator"></span>
+                </div>
+                <div class="form-group">
+                  <label for="cidade-imovel">Cidade do Imóvel</label>
+                  <input type="text" id="cidade-imovel" class="input" placeholder="Cidade do imóvel">
+                </div>
+                <div class="form-group">
+                  <label for="estado-imovel">Estado do Imóvel</label>
+                  <select id="estado-imovel" class="input">
+                    <option value="">Selecione...</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="construtora">Construtora (opcional)</label>
+                  <input type="text" id="construtora" class="input" placeholder="Nome da construtora">
+                </div>
+                <div class="form-group">
+                  <label for="area-construida">Área Construída (m²)</label>
+                  <div class="input-group">
+                    <input type="number" id="area-construida" class="input" placeholder="Ex: 80" style="padding-right: 44px;">
+                    <span class="input-suffix">m²</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="tipo-imovel">Tipo de Imóvel</label>
+                  <select id="tipo-imovel" class="input">
+                    <option value="apartamento">🏢 Apartamento</option>
+                    <option value="casa">🏠 Casa</option>
+                    <option value="terreno-construcao">🏗️ Terreno + Construção</option>
+                    <option value="comercial">🏪 Comercial</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="margin-top: 20px;">
+                <label style="display:block;margin-bottom:10px;">Situação do Imóvel <span style="color:var(--danger)">*</span></label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="tipo-imovel-situacao" id="imovel-novo" value="novo" checked>
+                    ✨ Imóvel Novo (até 80%)
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="tipo-imovel-situacao" id="imovel-usado" value="usado">
+                    🔑 Imóvel Usado (até 70%)
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card: Condições do Financiamento -->
+            <div class="card reveal" style="margin-bottom: 28px;">
+              <div class="card-header">
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div>
+                  <div class="card-title">Condições do Financiamento</div>
+                  <div class="card-subtitle">Prazo, juros e sistema de amortização</div>
+                </div>
+              </div>
+
+              <div class="form-grid form-grid-2" style="margin-bottom: 28px;">
+                <!-- Prazo -->
+                <div class="form-group">
+                  <label for="prazo">Prazo do Financiamento</label>
+                  <select id="prazo" class="input">
+                    <option value="120">120 meses (10 anos)</option>
+                    <option value="180">180 meses (15 anos)</option>
+                    <option value="240">240 meses (20 anos)</option>
+                    <option value="300">300 meses (25 anos)</option>
+                    <option value="360" selected>360 meses (30 anos)</option>
+                    <option value="420">420 meses (35 anos)</option>
+                  </select>
+                  <span id="prazo-display" style="font-size:.78rem;color:var(--primary);font-weight:600;margin-top:4px;">30 anos</span>
+                </div>
+
+                <!-- Taxa de Juros -->
+                <div class="form-group">
+                  <label for="taxa-juros">Taxa de Juros (% ao ano)</label>
+                  <div class="input-group">
+                    <input type="text" id="taxa-juros" class="input" placeholder="10,49" value="10,49" data-mask="percent" style="padding-right: 44px;">
+                    <span class="input-suffix">% a.a.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Range prazo -->
+              <div class="range-container" style="margin-bottom: 20px;">
+                <div class="range-header">
+                  <span class="range-label">Prazo (meses)</span>
+                  <span class="range-value" id="range-prazo-val">360</span>
+                </div>
+                <input type="range" id="prazo-range" min="120" max="420" step="60" value="360">
+                <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--text-muted);margin-top:4px;">
+                  <span>10 anos</span><span>15</span><span>20</span><span>25</span><span>30</span><span>35 anos</span>
+                </div>
+              </div>
+
+              <!-- Range taxa -->
+              <div class="range-container" style="margin-bottom: 28px;">
+                <div class="range-header">
+                  <span class="range-label">Taxa de Juros</span>
+                  <span class="range-value" id="range-taxa-val">10,49%</span>
+                </div>
+                <input type="range" id="taxa-range" min="2" max="20" step="0.01" value="10.49">
+                <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--text-muted);margin-top:4px;">
+                  <span>2%</span><span>5%</span><span>8%</span><span>11%</span><span>14%</span><span>17%</span><span>20%</span>
+                </div>
+              </div>
+
+              <!-- Sistema de Amortização -->
+              <div style="margin-bottom: 24px;">
+                <label style="display:block;margin-bottom:12px;font-size:.82rem;font-weight:600;color:var(--text-secondary);">Sistema de Amortização</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="sistema" id="sistema-sac" value="SAC" checked>
+                    📉 SAC — Parcelas decrescentes
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="sistema" id="sistema-price" value="PRICE">
+                    📊 PRICE — Parcelas fixas
+                  </label>
+                </div>
+              </div>
+
+              <!-- Opções adicionais -->
+              <div style="display:flex;flex-wrap:wrap;gap:12px;padding-top:20px;border-top:1px solid var(--border);">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="incluir-seguro" checked>
+                  🛡️ Incluir seguro habitacional (MIP + DFI)
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="incluir-taxa-admin" checked>
+                  📋 Incluir taxa administrativa
+                </label>
+              </div>
+            </div>
+
+            <!-- Botões de ação -->
+            <div class="actions-row">
+              <button type="button" id="btn-calcular" class="btn-calcular btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Calcular Financiamento
+              </button>
+              <button type="button" id="btn-limpar" class="btn btn-outline">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.09"/></svg>
+                Limpar
+              </button>
+              <button type="button" class="btn btn-outline" onclick="adicionarComparacao()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Adicionar ao Comparador
+              </button>
+            </div>
+          </form>
+
+          <!-- ═════════════════════════════════════
+               RESULTADO / DASHBOARD
+          ═════════════════════════════════════ -->
+          <div id="resultado-container" style="margin-top: 60px;">
+
+            <div class="section-header">
+              <span class="section-tag">Resultado</span>
+              <h2 class="section-title">Resultado da Simulação</h2>
+            </div>
+
+            <!-- Dashboard Cards -->
+            <div class="dashboard-grid" style="margin-bottom: 40px;">
+              <div class="stat-card primary">
+                <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+                <div class="stat-label">Valor do Imóvel</div>
+                <div class="stat-value" id="res-valor-imovel">R$ 0,00</div>
+              </div>
+              <div class="stat-card success">
+                <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                <div class="stat-label">Entrada Total</div>
+                <div class="stat-value" id="res-entrada">R$ 0,00</div>
+              </div>
+              <div class="stat-card warning">
+                <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+                <div class="stat-label">FGTS Utilizado</div>
+                <div class="stat-value" id="res-fgts">R$ 0,00</div>
+              </div>
+              <div class="stat-card secondary">
+                <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M1 9h22"/></svg></div>
+                <div class="stat-label">Valor Financiado</div>
+                <div class="stat-value" id="res-financiado">R$ 0,00</div>
+              </div>
+              <div class="stat-card primary" style="border: 2px solid var(--primary);">
+                <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                <div class="stat-label">1ª Parcela</div>
+                <div class="stat-value" id="res-primeira-parcela">R$ 0,00</div>
+                <div class="stat-sub" id="res-sistema">SAC</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon" style="background: var(--bg-secondary);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                <div class="stat-label">Última Parcela</div>
+                <div class="stat-value" id="res-ultima-parcela">R$ 0,00</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon" style="background: var(--bg-secondary);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
+                <div class="stat-label">Parcela Média</div>
+                <div class="stat-value" id="res-parcela-media">R$ 0,00</div>
+              </div>
+              <div class="stat-card danger">
+                <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                <div class="stat-label">Total de Juros</div>
+                <div class="stat-value" id="res-total-juros">R$ 0,00</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon" style="background: var(--bg-secondary);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                <div class="stat-label">Total Pago</div>
+                <div class="stat-value" id="res-total-pago">R$ 0,00</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon" style="background: var(--bg-secondary);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                <div class="stat-label">Prazo</div>
+                <div class="stat-value" id="res-prazo" style="font-size:1.1rem;">— anos</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon" style="background: var(--bg-secondary);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+                <div class="stat-label">Taxa de Juros</div>
+                <div class="stat-value" id="res-taxa" style="font-size:1.1rem;">—</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon" style="background: var(--bg-secondary);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+                <div class="stat-label">Comprometimento Renda</div>
+                <div class="stat-value" id="res-comprometimento">—</div>
+              </div>
+            </div>
+
+            <!-- Barra de progresso financiamento -->
+            <div class="card reveal" style="margin-bottom: 32px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <span style="font-size:.9rem;font-weight:600;color:var(--text-secondary);">Percentual Financiado</span>
+                <span id="res-perc-financiado" style="font-size:1.1rem;font-weight:800;color:var(--primary);">—</span>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="prog-financiado" style="width: 0%;"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:.72rem;color:var(--text-muted);">
+                <span>0%</span><span>Máximo permitido</span><span>100%</span>
+              </div>
+            </div>
+
+            <!-- TABS: Gráficos / Tabela / Custos -->
+            <div class="tabs-container">
+              <div class="tabs-nav">
+                <button class="tab-btn active" data-tab="graficos">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                  Gráficos
+                </button>
+                <button class="tab-btn" data-tab="insights">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  Análise Inteligente
+                </button>
+                <button class="tab-btn" data-tab="parcelas">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  Tabela de Parcelas
+                </button>
+                <button class="tab-btn" data-tab="custos">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                  Custos da Compra
+                </button>
+              </div>
+
+              <!-- Gráficos -->
+              <div class="tab-panel active" id="tab-graficos">
+                <div class="charts-grid">
+                  <div class="chart-card"><div style="height:340px;"><canvas id="chartEvolucao"></canvas></div></div>
+                  <div class="chart-card"><div style="height:340px;"><canvas id="chartDistribuicao"></canvas></div></div>
+                  <div class="chart-card"><div style="height:340px;"><canvas id="chartSaldoDevedor"></canvas></div></div>
+                  <div class="chart-card"><div style="height:340px;"><canvas id="chartAmortizacao"></canvas></div></div>
+                </div>
+              </div>
+
+              <!-- Insights -->
+              <div class="tab-panel" id="tab-insights">
+                <div class="insights-grid" id="insights-container">
+                  <p style="color:var(--text-muted);">Realize uma simulação para ver a análise inteligente.</p>
+                </div>
+              </div>
+
+              <!-- Tabela de Parcelas -->
+              <div class="tab-panel" id="tab-parcelas">
+                <div class="table-wrapper">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Mês</th>
+                        <th>Parcela Total</th>
+                        <th>Amortização</th>
+                        <th>Juros</th>
+                        <th>Seguro + Taxa</th>
+                        <th>Saldo Devedor</th>
+                        <th>Composição</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabela-parcelas-body">
+                      <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted);">Realize uma simulação para ver a tabela de parcelas.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Custos da Compra -->
+              <div class="tab-panel" id="tab-custos">
+                <div class="card">
+                  <h4 style="margin-bottom: 24px; display:flex;align-items:center;gap:10px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Custo Total da Compra
+                  </h4>
+                  <div class="custos-grid">
+                    <div class="custo-item"><span>ITBI (2% do valor)</span><strong id="custo-itbi">—</strong></div>
+                    <div class="custo-item"><span>Registro em Cartório</span><strong id="custo-registro">—</strong></div>
+                    <div class="custo-item"><span>Escritura</span><strong id="custo-escritura">—</strong></div>
+                    <div class="custo-item"><span>Avaliação do Imóvel</span><strong id="custo-avaliacao">—</strong></div>
+                    <div class="custo-item"><span>Total de Despesas Extras</span><strong id="custo-total-extras">—</strong></div>
+                    <div class="custo-item total"><span>💰 Total Necessário na Compra (entrada + despesas)</span><strong id="custo-total-compra">—</strong></div>
+                  </div>
+                  <p style="font-size:.75rem;color:var(--text-muted);margin-top:16px;">* ITBI pode variar por município. Valores estimativos. Consulte a Caixa para valores exatos.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botões de exportação -->
+            <div class="actions-row" style="margin-top: 40px;">
+              <button class="btn btn-primary" onclick="imprimirResultado()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                Imprimir
+              </button>
+              <button class="btn btn-secondary" onclick="compartilharResultado()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                Compartilhar
+              </button>
+              <button class="btn btn-outline" onclick="navigateTo('tabelas')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                Ver SAC × PRICE
+              </button>
+            </div>
+
+          </div><!-- /resultado-container -->
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SEÇÃO: TABELAS SAC x PRICE
+    ══════════════════════════════════════════ -->
+    <section class="page-section" id="section-tabelas">
+      <div style="padding: 80px 0;">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Comparativo</span>
+            <h2 class="section-title">Tabela SAC × PRICE</h2>
+            <p class="section-desc">Compare os dois sistemas de amortização e escolha o mais vantajoso para seu perfil</p>
+          </div>
+
+          <!-- Explicação dos sistemas -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px;" class="form-grid-2">
+            <div class="card reveal">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <div style="width:48px;height:48px;background:rgba(37,99,235,0.12);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                </div>
+                <div>
+                  <h4 style="color:var(--primary);">Sistema SAC</h4>
+                  <p style="font-size:.75rem;color:var(--text-muted);">Sistema de Amortização Constante</p>
+                </div>
+              </div>
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+                <li style="font-size:.875rem;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--success);font-weight:700;flex-shrink:0;">✓</span> Parcelas decrescentes ao longo do tempo</li>
+                <li style="font-size:.875rem;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--success);font-weight:700;flex-shrink:0;">✓</span> Amortização constante em cada parcela</li>
+                <li style="font-size:.875rem;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--success);font-weight:700;flex-shrink:0;">✓</span> Paga menos juros no total</li>
+                <li style="font-size:.875rem;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--warning);font-weight:700;flex-shrink:0;">!</span> Primeira parcela mais alta que PRICE</li>
+                <li style="font-size:.875rem;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--success);font-weight:700;flex-shrink:0;">✓</span> Mais utilizado na Caixa Econômica</li>
+              </ul>
+            </div>
+            <div class="card reveal">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <div style="width:48px;height:48px;background:rgba(124,58,237,0.12);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </div>
+                <div>
+                  <h4 style="color:var(--secondary);">Sistema PRICE</h4>
+                  <p style="font-size:.75rem;color:var(--text-muted);">Tabela PRICE / HP</p>
+                </div>
+              </div>
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+                <li style="font-size:.875rem;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--success);font-weight:700;flex-shrink:0;">✓</span> Parcelas fixas durante todo o contrato</li>
+                <li style="font-size:.875rem;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--success);font-weight:700;flex-shrink:0;">✓</span> Previsibilidade total no orçamento</li>
+                <li style="font-size:.875rem;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--success);font-weight:700;flex-shrink:0;">✓</span> Primeira parcela menor que SAC</li>
+                <li style="font-size:.875rem;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--warning);font-weight:700;flex-shrink:0;">!</span> Paga mais juros no total</li>
+                <li style="font-size:.875rem;color:var(--text-secondary);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--warning);font-weight:700;flex-shrink:0;">!</span> Amortização lenta no início</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Comparação de resultados -->
+          <div class="card reveal" style="margin-bottom: 32px;">
+            <h4 style="margin-bottom:24px;display:flex;align-items:center;gap:10px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              Comparativo SAC × PRICE
+              <span style="font-size:.75rem;font-weight:400;color:var(--text-muted);">(da última simulação)</span>
+            </h4>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;" class="comparison-table form-grid-2">
+              <!-- SAC -->
+              <div class="comp-col sac" style="padding:28px;border-right:1px solid var(--border);">
+                <div class="comp-col-header">
+                  <div class="system-badge">📉 SAC</div>
+                  <div class="comp-col-title">Sistema de Amortização Constante</div>
+                </div>
+                <div class="comp-row"><span class="comp-key">1ª Parcela</span><span class="comp-val" id="comp-sac-primeira">—</span></div>
+                <div class="comp-row"><span class="comp-key">Última Parcela</span><span class="comp-val" id="comp-sac-ultima">—</span></div>
+                <div class="comp-row"><span class="comp-key">Parcela Média</span><span class="comp-val" id="comp-sac-media">—</span></div>
+                <div class="comp-row"><span class="comp-key">Total de Juros</span><span class="comp-val text-danger" id="comp-sac-juros">—</span></div>
+                <div class="comp-row"><span class="comp-key">Total Pago</span><span class="comp-val" id="comp-sac-total">—</span></div>
+              </div>
+              <!-- PRICE -->
+              <div class="comp-col price" style="padding:28px;">
+                <div class="comp-col-header">
+                  <div class="system-badge" style="background:rgba(124,58,237,0.12);color:var(--secondary);">📊 PRICE</div>
+                  <div class="comp-col-title">Tabela PRICE / HP</div>
+                </div>
+                <div class="comp-row"><span class="comp-key">1ª Parcela</span><span class="comp-val" id="comp-price-primeira">—</span></div>
+                <div class="comp-row"><span class="comp-key">Última Parcela</span><span class="comp-val" id="comp-price-ultima">—</span></div>
+                <div class="comp-row"><span class="comp-key">Parcela Média</span><span class="comp-val" id="comp-price-media">—</span></div>
+                <div class="comp-row"><span class="comp-key">Total de Juros</span><span class="comp-val text-danger" id="comp-price-juros">—</span></div>
+                <div class="comp-row"><span class="comp-key">Total Pago</span><span class="comp-val" id="comp-price-total">—</span></div>
+              </div>
+            </div>
+
+            <div style="margin-top:20px;padding:20px;background:var(--bg-secondary);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+              <div>
+                <span style="font-size:.82rem;color:var(--text-muted);">Economia total (SAC vs PRICE):</span>
+                <strong style="font-size:1.25rem;color:var(--success);display:block;" id="comp-economia">—</strong>
+              </div>
+              <span class="badge badge-success" id="comp-economia-desc">—</span>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <button class="btn btn-primary" onclick="navigateTo('simulador')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Fazer nova simulação
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SEÇÃO: MCMV
+    ══════════════════════════════════════════ -->
+    <section class="page-section" id="section-mcmv">
+      <div style="padding: 80px 0;">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Programa Social</span>
+            <h2 class="section-title">Minha Casa Minha Vida</h2>
+            <p class="section-desc">Verifique se você se enquadra no programa e quais benefícios são aplicáveis</p>
+          </div>
+
+          <!-- Resultado MCMV -->
+          <div id="mcmv-result" style="margin-bottom: 40px;">
+            <div class="card">
+              <div style="text-align:center;padding:40px 20px;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="margin:0 auto 16px;display:block;opacity:.4;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <p>Realize uma simulação com sua renda e valor do imóvel para verificar o enquadramento no MCMV.</p>
+                <button class="btn btn-primary" style="margin-top:16px;" onclick="navigateTo('simulador')">Ir para o simulador</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabela de faixas -->
+          <div class="card reveal">
+            <h4 style="margin-bottom:20px;">Faixas do Programa Minha Casa Minha Vida 2026</h4>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Faixa</th>
+                    <th>Renda Familiar</th>
+                    <th>Taxa de Juros</th>
+                    <th>Subsídio Máx.</th>
+                    <th>Imóvel Máx.</th>
+                    <th>Benefício</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="badge badge-success">Faixa 1</span></td>
+                    <td>Até R$ 2.640</td>
+                    <td class="text-success font-semibold">4,50% a.a.</td>
+                    <td class="text-success font-semibold">R$ 55.000</td>
+                    <td>R$ 170.000</td>
+                    <td>Taxa + subsídio máximo</td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge badge-primary">Faixa 1,5</span></td>
+                    <td>R$ 2.640 – R$ 4.400</td>
+                    <td class="text-primary font-semibold">4,75% a.a.</td>
+                    <td class="text-primary font-semibold">R$ 47.500</td>
+                    <td>R$ 264.000</td>
+                    <td>Taxa reduzida + subsídio</td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge badge-warning">Faixa 2</span></td>
+                    <td>R$ 4.400 – R$ 8.000</td>
+                    <td class="text-warning font-semibold">6,00% a.a.</td>
+                    <td class="text-warning font-semibold">R$ 29.000</td>
+                    <td>R$ 350.000</td>
+                    <td>Taxa reduzida + subsídio</td>
+                  </tr>
+                  <tr>
+                    <td><span class="badge badge-danger">Faixa 3</span></td>
+                    <td>R$ 8.000 – R$ 12.000</td>
+                    <td class="text-danger font-semibold">7,66% a.a.</td>
+                    <td>—</td>
+                    <td>R$ 350.000</td>
+                    <td>Condições diferenciadas</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SEÇÃO: CALCULADORAS
+    ══════════════════════════════════════════ -->
+    <section class="page-section" id="section-calculadoras">
+      <div style="padding: 80px 0;">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Ferramentas</span>
+            <h2 class="section-title">Calculadoras Auxiliares</h2>
+            <p class="section-desc">Ferramentas extras para planejar melhor seu financiamento imobiliário</p>
+          </div>
+
+          <div class="calc-grid">
+
+            <!-- Capacidade de financiamento -->
+            <div class="calc-card reveal">
+              <h4>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                Capacidade de Financiamento
+              </h4>
+              <div class="form-group">
+                <label for="cap-renda">Renda Bruta Mensal</label>
+                <div class="input-group"><span class="input-prefix">R$</span><input type="text" id="cap-renda" class="input" placeholder="0,00" data-mask="currency"></div>
+              </div>
+              <div class="form-group" style="margin-top:12px;">
+                <label for="cap-prazo">Prazo (meses)</label>
+                <select id="cap-prazo" class="input">
+                  <option value="120">120 meses</option><option value="180">180</option><option value="240">240</option>
+                  <option value="300">300</option><option value="360" selected>360</option><option value="420">420</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-top:12px;">
+                <label for="cap-taxa">Taxa de Juros (% a.a.)</label>
+                <input type="text" id="cap-taxa" class="input" placeholder="10,49" value="10,49">
+              </div>
+              <div class="form-group" style="margin-top:12px;">
+                <div class="radio-group">
+                  <label class="radio-label"><input type="radio" name="cap-tipo" id="cap-tipo-novo" value="novo" checked> Imóvel Novo</label>
+                  <label class="radio-label"><input type="radio" name="cap-tipo" id="cap-tipo-usado" value="usado"> Imóvel Usado</label>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-sm" style="margin-top:16px;width:100%;" onclick="calcularCapacidade()">Calcular</button>
+              <div id="cap-resultado"></div>
+            </div>
+
+            <!-- Renda mínima necessária -->
+            <div class="calc-card reveal">
+              <h4>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Renda Mínima Necessária
+              </h4>
+              <div class="form-group">
+                <label for="renda-imovel">Valor do Imóvel</label>
+                <div class="input-group"><span class="input-prefix">R$</span><input type="text" id="renda-imovel" class="input" placeholder="0,00" data-mask="currency"></div>
+              </div>
+              <div class="form-group" style="margin-top:12px;">
+                <label for="renda-entrada">Valor da Entrada</label>
+                <div class="input-group"><span class="input-prefix">R$</span><input type="text" id="renda-entrada" class="input" placeholder="0,00" data-mask="currency"></div>
+              </div>
+              <div class="form-group" style="margin-top:12px;">
+                <label for="renda-prazo">Prazo (meses)</label>
+                <select id="renda-prazo" class="input">
+                  <option value="120">120</option><option value="180">180</option><option value="240">240</option>
+                  <option value="300">300</option><option value="360" selected>360</option><option value="420">420</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-top:12px;">
+                <label for="renda-taxa">Taxa (% a.a.)</label>
+                <input type="text" id="renda-taxa" class="input" placeholder="10,49" value="10,49">
+              </div>
+              <button class="btn btn-success btn-sm" style="margin-top:16px;width:100%;" onclick="calcularRendaMinima()">Calcular</button>
+              <div id="renda-resultado"></div>
+            </div>
+
+            <!-- Custo total da compra -->
+            <div class="calc-card reveal">
+              <h4>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Custo Total da Compra
+              </h4>
+              <div class="form-group">
+                <label for="ctc-imovel">Valor do Imóvel</label>
+                <div class="input-group"><span class="input-prefix">R$</span><input type="text" id="ctc-imovel" class="input" placeholder="0,00" data-mask="currency"></div>
+              </div>
+              <div class="form-group" style="margin-top:12px;">
+                <label for="ctc-financiado">Valor Financiado</label>
+                <div class="input-group"><span class="input-prefix">R$</span><input type="text" id="ctc-financiado" class="input" placeholder="0,00" data-mask="currency"></div>
+              </div>
+              <button class="btn btn-outline" style="margin-top:16px;width:100%;border-color:var(--warning);color:var(--warning);" onclick="calcularCustoTotalCompra()">Calcular</button>
+              <div id="ctc-resultado"></div>
+            </div>
+
+            <!-- Entrada ideal -->
+            <div class="calc-card reveal">
+              <h4>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                Entrada Ideal
+              </h4>
+              <div class="form-group">
+                <label for="ent-imovel">Valor do Imóvel</label>
+                <div class="input-group"><span class="input-prefix">R$</span><input type="text" id="ent-imovel" class="input" placeholder="0,00" data-mask="currency"></div>
+              </div>
+              <button class="btn btn-secondary btn-sm" style="margin-top:16px;width:100%;" onclick="
+                const v = Utils.getNumVal('ent-imovel');
+                if (!v) { Utils.toast('Informe o valor do imóvel','warning'); return; }
+                const e = Finance.calcularEntradaIdeal(v);
+                document.getElementById('ent-resultado').innerHTML = `
+                  <div class='calc-result'>
+                    <div class='custo-item'><span>Entrada mínima (20%)</span><strong>${Utils.formatCurrency(e.minima)}</strong></div>
+                    <div class='custo-item'><span>Recomendada (25%)</span><strong>${Utils.formatCurrency(e.recomendada)}</strong></div>
+                    <div class='custo-item total'><span>Entrada ideal (30%)</span><strong class='text-success'>${Utils.formatCurrency(e.ideal)}</strong></div>
+                  </div>`;
+              ">Calcular</button>
+              <div id="ent-resultado"></div>
+            </div>
+
+            <!-- ITBI -->
+            <div class="calc-card reveal">
+              <h4>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Calculadora ITBI
+              </h4>
+              <div class="form-group">
+                <label for="itbi-imovel">Valor do Imóvel / Venal</label>
+                <div class="input-group"><span class="input-prefix">R$</span><input type="text" id="itbi-imovel" class="input" placeholder="0,00" data-mask="currency"></div>
+              </div>
+              <div class="form-group" style="margin-top:12px;">
+                <label for="itbi-aliquota">Alíquota (%)</label>
+                <input type="text" id="itbi-aliquota" class="input" placeholder="2,00" value="2,00">
+              </div>
+              <button class="btn btn-outline" style="margin-top:16px;width:100%;border-color:var(--danger);color:var(--danger);" onclick="
+                const v = Utils.getNumVal('itbi-imovel');
+                const a = Utils.parsePercent(document.getElementById('itbi-aliquota').value) / 100 || 0.02;
+                if (!v) { Utils.toast('Informe o valor','warning'); return; }
+                const itbi = Finance.calcularITBI(v, a);
+                document.getElementById('itbi-resultado').innerHTML = `
+                  <div class='calc-result'>
+                    <span>Valor do ITBI (${(a*100).toFixed(2)}%):</span>
+                    <strong class='text-primary text-xl'>${Utils.formatCurrency(itbi)}</strong>
+                    <small>* A alíquota do ITBI varia por município</small>
+                  </div>`;
+              ">Calcular</button>
+              <div id="itbi-resultado"></div>
+            </div>
+
+            <!-- Comprometimento de renda -->
+            <div class="calc-card reveal">
+              <h4>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Comprometimento de Renda
+              </h4>
+              <div class="form-group">
+                <label for="comp-parcela">Valor da Parcela</label>
+                <div class="input-group"><span class="input-prefix">R$</span><input type="text" id="comp-parcela" class="input" placeholder="0,00" data-mask="currency"></div>
+              </div>
+              <div class="form-group" style="margin-top:12px;">
+                <label for="comp-renda">Renda Bruta Mensal</label>
+                <div class="input-group"><span class="input-prefix">R$</span><input type="text" id="comp-renda" class="input" placeholder="0,00" data-mask="currency"></div>
+              </div>
+              <button class="btn btn-outline" style="margin-top:16px;width:100%;border-color:var(--info);color:var(--info);" onclick="
+                const p = Utils.getNumVal('comp-parcela');
+                const r = Utils.getNumVal('comp-renda');
+                if (!p || !r) { Utils.toast('Preencha os campos','warning'); return; }
+                const c = Finance.calcularComprometimento(p, r);
+                const tipo = c <= 25 ? 'success' : c <= 30 ? 'warning' : 'danger';
+                const msg = c <= 25 ? '✅ Saudável' : c <= 30 ? '⚠️ Próximo do limite' : '❌ Acima do limite (30%)';
+                document.getElementById('comp-resultado').innerHTML = `
+                  <div class='calc-result'>
+                    <span>Comprometimento da renda:</span>
+                    <strong class='text-${tipo} text-xl'>${Utils.formatPercent(c)}</strong>
+                    <div class='badge badge-${tipo}' style='margin-top:6px;'>${msg}</div>
+                    <small>Caixa permite máximo de 30%</small>
+                  </div>`;
+              ">Calcular</button>
+              <div id="comp-resultado"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SEÇÃO: DICAS
+    ══════════════════════════════════════════ -->
+    <section class="page-section" id="section-dicas">
+      <div style="padding: 80px 0;">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Orientações</span>
+            <h2 class="section-title">Dicas para Financiar Melhor</h2>
+            <p class="section-desc">Estratégias para economizar e conseguir as melhores condições no seu financiamento</p>
+          </div>
+
+          <div class="dicas-grid">
+            <div class="dica-card reveal"><div class="dica-num">01</div><h4>Aumente a entrada</h4><p>Quanto maior a entrada, menor o valor financiado e consequentemente menos juros você paga. Uma entrada de 30% pode economizar dezenas de milhares de reais.</p></div>
+            <div class="dica-card reveal"><div class="dica-num">02</div><h4>Use o FGTS sabiamente</h4><p>O FGTS pode ser usado na entrada ou para abater o saldo devedor. Utilize-o para reduzir o valor financiado e assim diminuir o total de juros pagos.</p></div>
+            <div class="dica-card reveal"><div class="dica-num">03</div><h4>Prefira o SAC</h4><p>O sistema SAC é mais econômico no longo prazo. Embora a primeira parcela seja maior, o total pago em juros é significativamente menor que no PRICE.</p></div>
+            <div class="dica-card reveal"><div class="dica-num">04</div><h4>Reduza o prazo</h4><p>Cada ano a menos no prazo representa menos juros. Se possível, opte por um prazo de 20-25 anos em vez de 30-35 anos. A economia pode ser expressiva.</p></div>
+            <div class="dica-card reveal"><div class="dica-num">05</div><h4>Compare as taxas</h4><p>Negocie a taxa de juros. Clientes com conta e relacionamento na Caixa podem conseguir taxas menores. Servidores públicos têm condições especiais.</p></div>
+            <div class="dica-card reveal"><div class="dica-num">06</div><h4>Planeje os custos extras</h4><p>ITBI, registro, escritura e avaliação somam de 3% a 5% do valor do imóvel. Inclua esses custos no seu planejamento financeiro.</p></div>
+            <div class="dica-card reveal"><div class="dica-num">07</div><h4>Comprometimento de renda</h4><p>A Caixa limita as parcelas a 30% da renda bruta. Mas especialistas recomendam não comprometer mais de 25% para manter conforto financeiro.</p></div>
+            <div class="dica-card reveal"><div class="dica-num">08</div><h4>Verifique o MCMV</h4><p>Se sua renda familiar é de até R$ 12.000, você pode se enquadrar no Minha Casa Minha Vida com taxas reduzidas e subsídios de até R$ 55.000.</p></div>
+            <div class="dica-card reveal"><div class="dica-num">09</div><h4>Documente tudo</h4><p>Mantenha seus documentos de renda atualizados (holerites, IR, extratos). A análise de crédito da Caixa exige comprovação de renda dos últimos 3 meses.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SEÇÃO: HISTÓRICO
+    ══════════════════════════════════════════ -->
+    <section class="page-section" id="section-historico">
+      <div style="padding: 80px 0;">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Memória</span>
+            <h2 class="section-title">Histórico de Simulações</h2>
+            <p class="section-desc">Suas últimas simulações salvas localmente no navegador</p>
+          </div>
+
+          <!-- Comparador -->
+          <div class="card reveal" style="margin-bottom:40px;">
+            <div class="card-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+              </div>
+              <div>
+                <div class="card-title">Comparador de Financiamentos</div>
+                <div class="card-subtitle">Compare até 3 financiamentos simultaneamente</div>
+              </div>
+            </div>
+            <div id="comparador-cards" class="comparador-cards"></div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <button class="btn btn-outline" onclick="navigateTo('simulador')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Adicionar do simulador
+              </button>
+              <button class="btn btn-primary" id="btn-comparar" onclick="executarComparacao()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/></svg>
+                Comparar
+              </button>
+            </div>
+            <div id="comparador-resultado" style="margin-top:24px;"></div>
+          </div>
+
+          <div class="historico-grid" id="historico-lista">
+            <div class="empty-state">
+              <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <p>Nenhuma simulação salva ainda.</p>
+              <button class="btn btn-primary" onclick="navigateTo('simulador')">Fazer Simulação</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SEÇÃO: CONTATO
+    ══════════════════════════════════════════ -->
+    <section class="page-section" id="section-contato">
+      <div style="padding: 80px 0;">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">Atendimento</span>
+            <h2 class="section-title">Entre em Contato</h2>
+            <p class="section-desc">Para condições oficiais e análise de crédito, consulte diretamente a Caixa Econômica Federal</p>
+          </div>
+
+          <div class="contato-grid">
+            <div class="contato-card reveal">
+              <div class="contato-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.61 5a2 2 0 0 1 1.99-2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17z"/></svg></div>
+              <h4>Central de Atendimento Caixa</h4>
+              <p>0800 726 0101 — 24h, 7 dias</p>
+              <p style="margin-top:8px;font-size:.78rem;">Atendimento gratuito para esclarecer dúvidas sobre financiamentos</p>
+            </div>
+            <div class="contato-card reveal">
+              <div class="contato-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+              <h4>Agências Caixa</h4>
+              <p>Atendimento presencial</p>
+              <p style="margin-top:8px;font-size:.78rem;">Leve documentos completos para análise de crédito e condições personalizadas</p>
+            </div>
+            <div class="contato-card reveal">
+              <div class="contato-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+              <h4>caixa.gov.br</h4>
+              <p>Site oficial da Caixa</p>
+              <p style="margin-top:8px;font-size:.78rem;">Acesse o simulador oficial e solicite seu financiamento online</p>
+            </div>
+          </div>
+
+          <!-- Aviso legal completo -->
+          <div class="card reveal" style="margin-top:48px;">
+            <div style="display:flex;align-items:flex-start;gap:16px;">
+              <div style="font-size:2rem;flex-shrink:0;">⚠️</div>
+              <div>
+                <h4 style="margin-bottom:12px;color:var(--warning);">Aviso de Responsabilidade</h4>
+                <p style="font-size:.875rem;line-height:1.8;">
+                  Esta ferramenta é um <strong>simulador educativo e informativo</strong>, desenvolvido para auxiliar no planejamento financeiro imobiliário. Os valores calculados são <strong>estimativas baseadas nos parâmetros informados</strong> e nas regras vigentes da Caixa Econômica Federal na data de atualização deste sistema.
+                </p>
+                <p style="font-size:.875rem;line-height:1.8;margin-top:12px;">
+                  As <strong>condições reais de financiamento</strong> dependem de: análise de crédito individual, avaliação do imóvel pela Caixa, comprovação de renda, consulta ao SERASA/SPC, políticas e normas vigentes da Caixa Econômica Federal no momento da contratação, e outros fatores individuais.
+                </p>
+                <p style="font-size:.875rem;line-height:1.8;margin-top:12px;">
+                  <strong>Não nos responsabilizamos</strong> por decisões tomadas com base exclusivamente nesta simulação. Consulte sempre uma agência da Caixa Econômica Federal para obter condições e propostas oficiais.
+                </p>
+                <p style="font-size:.75rem;color:var(--text-muted);margin-top:12px;">Versão: Junho/2026 — Regras baseadas nas normas publicadas até esta data.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ════════════════════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════════════════ -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-name">🏠 SimulaCaixa</div>
+          <p>Simulador inteligente de financiamento imobiliário baseado nas regras da Caixa Econômica Federal. Ferramenta educativa e gratuita para planejamento imobiliário.</p>
+          <p style="font-size:.72rem;margin-top:12px;color:var(--text-muted);">⚠️ Simulações de caráter informativo. Consulte sempre a Caixa para condições oficiais.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Simulador</h4>
+          <ul>
+            <li onclick="navigateTo('inicio')">Início</li>
+            <li onclick="navigateTo('simulador')">Calculadora</li>
+            <li onclick="navigateTo('tabelas')">SAC × PRICE</li>
+            <li onclick="navigateTo('mcmv')">Minha Casa Minha Vida</li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Ferramentas</h4>
+          <ul>
+            <li onclick="navigateTo('calculadoras')">Calculadoras</li>
+            <li onclick="navigateTo('historico')">Histórico</li>
+            <li onclick="navigateTo('dicas')">Dicas</li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Caixa Oficial</h4>
+          <ul>
+            <li>caixa.gov.br</li>
+            <li>0800 726 0101</li>
+            <li>App Habitação Caixa</li>
+            <li onclick="navigateTo('contato')">Contato</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 SimulaCaixa — Simulador Educativo de Financiamento Imobiliário</p>
+        <p>Não afiliado à Caixa Econômica Federal</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ════════════════════════════════════════════════════════
+       MODAL: AVISO LEGAL
+  ════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="modal-aviso">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-icon">⚠️</div>
+      <h3 id="modal-title">Aviso Importante</h3>
+      <p>
+        Esta é uma ferramenta de <strong>simulação educativa</strong> baseada nas regras da Caixa Econômica Federal.
+        Os valores são estimativas e <strong>não constituem proposta de crédito</strong>.
+        Condições reais dependem de análise de crédito e avaliação do imóvel pela Caixa.
+      </p>
+      <div class="modal-actions">
+        <button class="btn btn-primary btn-lg" onclick="fecharAviso()">Entendi, continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="utils.js"></script>
+  <script src="finance.js"></script>
+  <script src="charts.js"></script>
+  <script src="script.js"></script>
+
+  <script>
+    // ─── LOADER ────────────────────────────────────────────
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('page-loader');
+      setTimeout(() => {
+        loader.classList.add('fade-out');
+        setTimeout(() => loader.style.display = 'none', 500);
+      }, 800);
+    });
+
+    // ─── RANGE SLIDERS: feedback visual em tempo real ──────
+    document.addEventListener('DOMContentLoaded', () => {
+      const prazoRange = document.getElementById('prazo-range');
+      const taxaRange = document.getElementById('taxa-range');
+
+      if (prazoRange) {
+        prazoRange.addEventListener('input', (e) => {
+          const val = parseInt(e.target.value);
+          document.getElementById('range-prazo-val').textContent = val;
+          document.getElementById('prazo-display').textContent = (val/12) + ' anos';
+          // Gradiente visual
+          const perc = ((val - 120) / (420 - 120)) * 100;
+          e.target.style.background = `linear-gradient(to right, var(--primary) ${perc}%, var(--border-strong) ${perc}%)`;
+        });
+      }
+
+      if (taxaRange) {
+        taxaRange.addEventListener('input', (e) => {
+          const val = parseFloat(e.target.value).toFixed(2).replace('.', ',');
+          document.getElementById('range-taxa-val').textContent = val + '%';
+          document.getElementById('taxa-juros').value = val;
+          const perc = ((parseFloat(e.target.value) - 2) / (20 - 2)) * 100;
+          e.target.style.background = `linear-gradient(to right, var(--primary) ${perc}%, var(--border-strong) ${perc}%)`;
+        });
+      }
+
+      // Inicializar gradientes dos ranges
+      [prazoRange, taxaRange].forEach(r => {
+        if (r) {
+          const min = parseFloat(r.min);
+          const max = parseFloat(r.max);
+          const val = parseFloat(r.value);
+          const perc = ((val - min) / (max - min)) * 100;
+          r.style.background = `linear-gradient(to right, var(--primary) ${perc}%, var(--border-strong) ${perc}%)`;
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
